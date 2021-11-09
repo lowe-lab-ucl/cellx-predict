@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import tensorflow.keras as K
 
 from skimage.util import montage
-from visualisation import to_rgb
+from vizualisation import to_rgb
 
 
 def latent_space_traversal(decoder: K.models.Model,
@@ -30,18 +30,10 @@ def latent_space_traversal(decoder: K.models.Model,
 
             flat_grid = np.append(flat_grid, decoded, axis = 0)
 
-    output_grid = montage(flat_grid, 
-                          grid_shape = (len(l2_values), len(l1_values)), 
+    output_grid = montage(flat_grid,
+                          grid_shape = (len(l2_values), len(l1_values)),
                           multichannel = True,
                           fill = [255]*3,
                           padding_width = 3)
 
     return output_grid
-
-
-
-
-
-
-
-    
