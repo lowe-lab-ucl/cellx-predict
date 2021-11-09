@@ -13,9 +13,8 @@ def latent_space_traversal(decoder: K.models.Model,
                            l2_values: list or np.array):
 
     latent_dim = decoder.layers[0].input_shape[-1]
-    output_shape = decoder.layers[-1].output_shape
 
-    flat_grid = np.zeros((0,) + output_shape[1:], dtype = np.uint8)
+    flat_grid_list = []
 
     for l1_value in l1_values:
         for l2_value in l2_values:
@@ -28,7 +27,9 @@ def latent_space_traversal(decoder: K.models.Model,
             decoded = to_rgb(decoded, axis = -1)
             decoded = decoded.astype(np.uint8)
 
-            flat_grid = np.append(flat_grid, decoded, axis = 0)
+            flat_grid_list.append(decoded)
+
+    flat_grid = np.stack(flat_grid_list, axis = 0, dtype = np.uint8)
 
     output_grid = montage(flat_grid,
                           grid_shape = (len(l2_values), len(l1_values)),
