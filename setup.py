@@ -17,5 +17,5 @@ setup(
     url="https://github.com/lowe-lab-ucl/cellx-predict",
     packages=find_packages(),
     install_requires=requirements,
-    python_requires=">=3.6",
+    python_requires=">=3.7",
 )
