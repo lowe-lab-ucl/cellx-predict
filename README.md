@@ -162,15 +162,15 @@ An example notebook using the full model to perform inference (`inference.ipynb`
 # Citation
 
 ```bibtex
-@article {Soelistyo2021.11.24.469554,
-	author = {Soelistyo, Christopher and Vallardi, Giulia and Charras, Guillaume and Lowe, Alan R},
-	title = {Learning the rules of cell competition without prior scientific knowledge},
-	elocation-id = {2021.11.24.469554},
-	year = {2021},
-	doi = {10.1101/2021.11.24.469554},
-	publisher = {Cold Spring Harbor Laboratory},
-	URL = {https://www.biorxiv.org/content/early/2021/11/25/2021.11.24.469554},
-	eprint = {https://www.biorxiv.org/content/early/2021/11/25/2021.11.24.469554.full.pdf},
-	journal = {bioRxiv}
+@article{Soelistyo2021.11.24.469554,
+  author = {Soelistyo, Christopher and Vallardi, Giulia and Charras, Guillaume and Lowe, Alan R},
+  title = {Learning the rules of cell competition without prior scientific knowledge},
+  elocation-id = {2021.11.24.469554},
+  year = {2021},
+  doi = {10.1101/2021.11.24.469554},
+  publisher = {Cold Spring Harbor Laboratory},
+  URL = {https://www.biorxiv.org/content/early/2021/11/25/2021.11.24.469554},
+  eprint = {https://www.biorxiv.org/content/early/2021/11/25/2021.11.24.469554.full.pdf},
+  journal = {bioRxiv}
 }
 ```
