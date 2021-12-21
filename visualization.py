@@ -28,7 +28,7 @@ def norm_channel(
     return norm_copy
 
 
-def to_rgb(input: np.array, axis: int = -1):
+def to_rgb(input: np.ndarray, axis: int = -1) -> np.ndarray:
     _rgb_ch_0 = norm_channel(np.take_along_axis(input, 1, axis))
     _rgb_ch_1 = norm_channel(np.take_along_axis(input, 0, axis))
     _rgb_ch_2 = norm_channel(np.take_along_axis(input, 1, axis))
