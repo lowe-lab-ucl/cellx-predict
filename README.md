@@ -1,3 +1,6 @@
+[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Tests](https://github.com/lowe-lab-ucl/cellx-predict/actions/workflows/cellxpred.yml/badge.svg)](lowe-lab-ucl/cellx-predict/actions)
+
 ![header](assets/header.png)
 
 # cellx-predict
