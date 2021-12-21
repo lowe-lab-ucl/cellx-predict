@@ -9,7 +9,7 @@ def norm_channel(
     threshold: float = 5.0,
     low_percentile: float = 5.0,
     high_percentile: float = 99.0,
-):
+) -> np.ndarray:
 
     copy = np.copy(input, dtype=np.float32)
 
