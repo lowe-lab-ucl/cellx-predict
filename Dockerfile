@@ -1,5 +1,5 @@
-# FROM tensorflow/tensorflow:latest-gpu
-FROM cellx/cellx:latest
+FROM tensorflow/tensorflow:latest-gpu
+# FROM cellx/cellx:latest
 
 RUN python3 -m pip install --upgrade pip
 
