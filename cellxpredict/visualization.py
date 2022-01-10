@@ -1,28 +1,30 @@
+from typing import List
+
 import numpy as np
 from skimage.filters import median as median_filter
 from skimage.morphology import disk
 
-from typing import List
 
 def float_to_uint8(input: np.ndarray[np.float32]) -> np.ndarray[np.uint8]:
-    '''
+    """
     Transforms an np.float32 image into a np.uint8 image
 
     Parameters
     ----------
     input: np.array[np.float32]
         - Input image of shape (width,height,channels)
-    
+
     Returns
     -------
     output: np.array[np.uint8]
         - Output image of shape (width,height,channels)
-    '''
+    """
     mn = input.min()
     mx = input.max()
     mx -= mn
-    output = ((input - mn)/mx) * 255
+    output = ((input - mn) / mx) * 255
     return output.astype(np.uint8)
+
 
 def norm_channel(
     input: np.ndarray,
@@ -31,7 +33,7 @@ def norm_channel(
     low_percentile: float = 5.0,
     high_percentile: float = 99.0,
 ) -> np.ndarray:
-    '''
+    """
     Normalizes a single image channel for visualization purposes.
 
     Parameters
@@ -46,7 +48,7 @@ def norm_channel(
         - Pixel-intensity percentile below which to clip the image
     high_percentile:width
         - Normalized single-channel image
-    '''
+    """
     copy = np.copy(input, dtype=np.float32)
 
     # remove outliers
@@ -63,10 +65,13 @@ def norm_channel(
 
     return norm_copy
 
-def _to_rgb_single_image(input: np.ndarray,
-                         axis: int = -1,
-                         to_uint8: bool = True,
-                         ordered_channels: List[int] = [1,0,1]) -> np.ndarray:
+
+def _to_rgb_single_image(
+    input: np.ndarray,
+    axis: int = -1,
+    to_uint8: bool = True,
+    ordered_channels: List[int] = [1, 0, 1],
+) -> np.ndarray:
     _rgb_ch_0 = norm_channel(np.take_along_axis(input, ordered_channels[0], axis))
     _rgb_ch_1 = norm_channel(np.take_along_axis(input, ordered_channels[1], axis))
     _rgb_ch_2 = norm_channel(np.take_along_axis(input, ordered_channels[2], axis))
@@ -77,11 +82,13 @@ def _to_rgb_single_image(input: np.ndarray,
     return output
 
 
-def to_rgb(input: np.ndarray,
-           axis: int = -1,
-           to_uint8: bool = True,
-           ordered_channels: List[int] = [1,0,1]) -> np.ndarray:
-    '''
+def to_rgb(
+    input: np.ndarray,
+    axis: int = -1,
+    to_uint8: bool = True,
+    ordered_channels: List[int] = [1, 0, 1],
+) -> np.ndarray:
+    """
     Transforms a multichannel image (of series of images) into RGB.
 
     Parameters
@@ -99,15 +106,17 @@ def to_rgb(input: np.ndarray,
     -------
     output: np.ndarray
         - RGB-transformed output image(s), of shape (...,width,height,3)
-    '''
-    if len(ordered_channels) != 3 or not all([type(ch)==int for ch in ordered_channels]):
-        raise ValueError('''Parameter 'ordered_channels' must contain three integers specifying the input channels 
-                         that will map on to the red, green and blue channels in the output.''')
+    """
+    if len(ordered_channels) != 3 or not all(
+        [type(ch) == int for ch in ordered_channels]
+    ):
+        raise ValueError(
+            """Parameter 'ordered_channels' must contain three integers specifying the input channels
+                         that will map on to the red, green and blue channels in the output."""
+        )
 
-    to_rgb_single_image = lambda x: _to_rgb_single_image(x,
-                                                         axis=axis, 
-                                                         to_uint8=to_uint8,
-                                                         ordered_channels=ordered_channels)
-    output = np.apply_over_axes(to_rgb_single_image, input, [-3,-2,-1])
+    to_rgb_single_image = lambda x: _to_rgb_single_image(
+        x, axis=axis, to_uint8=to_uint8, ordered_channels=ordered_channels
+    )
+    output = np.apply_over_axes(to_rgb_single_image, input, [-3, -2, -1])
     return output
-
