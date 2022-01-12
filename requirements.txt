@@ -4,5 +4,5 @@ scipy
 scikit-image
 scikit-learn
 tqdm
-git+https://github.com/quantumjot/cellx@master#egg=cellx
+cellx -e git+https://github.com/quantumjot/cellx@master#egg=cellx
 # btrack>=0.4.2
