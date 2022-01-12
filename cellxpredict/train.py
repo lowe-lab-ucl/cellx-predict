@@ -88,7 +88,7 @@ def train_projector(config: ConfigBase):
     components_filename = config.model_dir / config.filename("components")
     np.savez(
         components_filename.with_suffix(".npz"),
-        components=pca.components_.T, # NOTE(arl): the transform must be transposed
+        components=pca.components_.T,  # NOTE(arl): the transform must be transposed
         mean=pca.mean_,
     )
 
