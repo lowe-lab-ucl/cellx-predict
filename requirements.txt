@@ -5,4 +5,3 @@ scipy
 scikit-image
 scikit-learn
 tqdm
-# btrack>=0.4.2
