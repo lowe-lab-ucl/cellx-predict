@@ -21,7 +21,7 @@ jobs:
       - name: Run Flake8
         run: |
           flake8
-    # - name: Test with pytest
-    #   run: |
-    #     pip install -e .
-    #     pytest
+      - name: Test with pytest
+        run: |
+          pip install -e .
+          pytest
