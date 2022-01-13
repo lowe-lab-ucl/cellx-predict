@@ -1,4 +1,4 @@
--e git+https://github.com/quantumjot/cellx@master#egg=cellx
+cellx@git+https://github.com/quantumjot/cellx@master#egg=cellx
 tensorflow>=2.4
 numpy>=1.12.0
 scipy
