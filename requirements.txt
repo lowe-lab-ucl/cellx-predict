@@ -1,8 +1,7 @@
+cellx@git+https://github.com/quantumjot/cellx@master#egg=cellx
 tensorflow>=2.4
 numpy>=1.12.0
 scipy
 scikit-image
 scikit-learn
 tqdm
-git+git://github.com/quantumjot/cellx@master#egg=cellx
-# btrack>=0.4.2
