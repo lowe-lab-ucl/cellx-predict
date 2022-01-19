@@ -20,26 +20,15 @@ The software requires Python 3.7 (or greater), `numpy`, `scipy`, `tqdm`, `Tensor
 ### Running in a Docker container
 
 
-Docker compose
+We recommend running this in a docker container. 
+We will use docker-compose for this
 
 ```bash
-env UID=$(id -u) GID=$(id -g) docker-compose up --build
-```
-We recommend running this in a docker container.
-
-Build the image:
-
-```sh
 git clone https://github.com/lowe-lab-ucl/cellx-predict.git
 cd cellx-predict
-docker build . -t cellxpred/cellxpred:latest
+env UID=$(id -u) GID=$(id -g) docker-compose up --build
 ```
 
-You can use the included shell script to run the container and specify the jobs according to the descriptions below.
-
-```sh
-./run_docker.sh
-```
 
 ### Local installation
 
