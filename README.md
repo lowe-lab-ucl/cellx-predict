@@ -19,6 +19,12 @@ The software requires Python 3.7 (or greater), `numpy`, `scipy`, `tqdm`, `Tensor
 
 ### Running in a Docker container
 
+
+Docker compose
+
+```bash
+env UID=$(id -u) GID=$(id -g) docker-compose up --build
+```
 We recommend running this in a docker container.
 
 Build the image:
