@@ -1,4 +1,5 @@
 import argparse
+import ast
 from pathlib import Path
 
 from cellxpredict.config import Models, config_from_args
@@ -46,6 +47,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--input_shape",
+        type=ast.literal_eval,
+        default=(64, 64, 2),
+        help="input shape of the image data (W, H, C)",
+    )
+
+    parser.add_argument(
         "--batch_size",
         type=int,
         default=256,
@@ -87,6 +95,5 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    print(args)
     config = config_from_args(args)
     train(config)
