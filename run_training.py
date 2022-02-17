@@ -110,5 +110,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     config = config_from_args(args)
-    print (config)
     train(config)
