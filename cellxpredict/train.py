@@ -1,6 +1,5 @@
 import sys
 import json
-#import datetime
 from pathlib import Path
 
 import numpy as np
@@ -16,7 +15,6 @@ from .config import ConfigBase
 from .models import _build_autoencoder, _build_encoder, _build_temporal
 
 # TODO(arl): remove these hard-coded values for release
-#NUM_IMAGES = 1_030_766
 NUM_IMAGES = 100
 MONTAGE_SAMPLES = 32
 TEMPORAL_STEPS_PER_EPOCH = 100
