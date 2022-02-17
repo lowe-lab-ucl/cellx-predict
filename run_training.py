@@ -33,6 +33,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--docs_dir",
+        type=Path,
+        default=DEFAULT_PATH / "docs",
+        help="path to the documentation output directory",
+    )
+
+    parser.add_argument(
         "--model_dir",
         type=Path,
         default=DEFAULT_PATH / "models",
@@ -68,6 +75,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--max_iterations",
+        type=int,
+        default=200,
+        help="maximum number of iterations",
+    )
+
+    parser.add_argument(
         "--capacity",
         type=int,
         default=50,
@@ -96,4 +110,5 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     config = config_from_args(args)
+    print (config)
     train(config)

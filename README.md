@@ -110,6 +110,7 @@ python run_training.py \
   --model=encoder \
   --src_dir=/path/to/training/patches \
   --log_dir=/path/to/log_dir \
+  --input_shape='(64, 64, 2)'
   --epochs=50 \
 ```
 

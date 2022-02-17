@@ -1,4 +1,7 @@
 import sys
+import json
+#import datetime
+from pathlib import Path
 
 import numpy as np
 from cellx.callbacks import (
@@ -13,7 +16,8 @@ from .config import ConfigBase
 from .models import _build_autoencoder, _build_encoder, _build_temporal
 
 # TODO(arl): remove these hard-coded values for release
-NUM_IMAGES = 1_030_766
+#NUM_IMAGES = 1_030_766
+NUM_IMAGES = 100
 MONTAGE_SAMPLES = 32
 TEMPORAL_STEPS_PER_EPOCH = 100
 
@@ -53,10 +57,11 @@ def train_encoder(config: ConfigBase):
     )
 
     # save the model weights
-    model_filename = config.model_dir / config.filename("weights")
+    config.model_dir.mkdir(parents=True, exist_ok=True)
+    model_filename = config.model_dir / config.filename_brief("weights")
     model.encoder.save_weights(model_filename.with_suffix(".h5"))
 
-    decoder_filename = config.filename("weights").replace("encoder", "decoder")
+    decoder_filename = config.filename_brief("weights").replace("encoder", "decoder")
     model_filename = config.model_dir / decoder_filename
     model.decoder.save_weights(model_filename.with_suffix(".h5"))
 
@@ -140,7 +145,33 @@ def train(config: ConfigBase):
 
     # set up a log directory
     config.log_dir = create_tensorboard_log_dir(config.log_dir)
+    config.model_dir = Path(str(config.log_dir).replace("logs", "models"))
+
+    # write a param json file
+    config.docs_dir = Path(str(config.log_dir).replace("logs", "docs"))
+    config.docs_dir.mkdir(parents=True, exist_ok=True)
+
+    # record the config params
+    time_stamp = str(config.docs_dir).split("/")[-1]
+    json_data = write_config_dictionary(config)
+    file_name = 'Training-Session.json'
+    with open(f'{config.docs_dir}/{time_stamp}-{file_name}', 'w') as json_file:
+        json.dump(json_data, json_file, indent=4)
 
     # get the training function
     train_fn = getattr(sys.modules[__name__], f"train_{config.model.lower()}")
     train_fn(config)
+
+
+def write_config_dictionary(config: ConfigBase) -> dict:
+    """Record params of the training run."""
+    json_data = {}
+    for param in config.__dict__:
+        json_data[param] = str(getattr(config, param))
+
+    # add global variables
+    json_data["NUM_IMAGES"] = str(NUM_IMAGES)
+    json_data["MONTAGE_SAMPLES"] = str(MONTAGE_SAMPLES)
+    json_data["TEMPORAL_STEPS_PER_EPOCH"] = str(TEMPORAL_STEPS_PER_EPOCH)
+
+    return json_data

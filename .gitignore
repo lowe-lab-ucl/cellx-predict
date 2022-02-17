@@ -1,3 +1,8 @@
+# Locally saved models / logs / docs
+logs
+docs
+models
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
