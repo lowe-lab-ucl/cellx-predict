@@ -65,10 +65,10 @@ def train_encoder(config: ConfigBase):
 
     # save the model weights
     config.model_dir.mkdir(parents=True, exist_ok=True)
-    model_filename = config.model_dir / config.filename_brief("weights")
+    model_filename = config.model_dir / config.filename("weights")
     model.encoder.save_weights(model_filename.with_suffix(".h5"))
 
-    decoder_filename = config.filename_brief("weights").replace("encoder", "decoder")
+    decoder_filename = config.filename("weights").replace("encoder", "decoder")
     model_filename = config.model_dir / decoder_filename
     model.decoder.save_weights(model_filename.with_suffix(".h5"))
 
@@ -79,8 +79,16 @@ def train_projector(config: ConfigBase):
 
     from .dataset import encoder_validation_dataset
 
-    # set up the model
-    model = _build_encoder(config)
+    # set up the model - train if weights don't exist
+    try:
+        model = _build_encoder(config)
+    except:
+        # train the encoder / decoder from scratch
+        config.model = 'encoder'
+        train_encoder(config)
+        # now load the weights & create the projector
+        config.model = 'projector'
+        model = _build_encoder(config)
     # print (model.summary())
 
     # set up the datasets and augmentation

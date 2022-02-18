@@ -54,6 +54,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--layers",
+        type=ast.literal_eval,
+        default=[8, 16, 32, 64],
+        help="encoder layers list",
+    )
+
+    parser.add_argument(
         "--batch_size",
         type=int,
         default=256,
