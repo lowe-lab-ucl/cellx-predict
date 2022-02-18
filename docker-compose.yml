@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+
+  cellxpred:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    user: "${UID}:${GID}"
+    stdin_open: true
+    tty: true
+    command: ["python", "run_training.py", "--model=temporal", "--epochs=100", "--use_probabilistic_encoder"]
+    volumes:
+      - ${GLIMPSE_DIR}:/cellx-predict/container/data:ro
+      - ${LOG_DIR}:/cellx-predict/container/logs:rw
+      - ${MODEL_DIR}:/cellx-predict/container/models:rw
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+              count: all
+              driver: nvidia
+              

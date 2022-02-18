@@ -17,23 +17,27 @@ This package provides a reference implementation of a tau-VAE. The tau-VAE netwo
 
 The software requires Python 3.7 (or greater), `numpy`, `scipy`, `tqdm`, `Tensorflow`, `scikit-image` and `scikit-learn`. Further, this repo makes extensive use of the [`cellx`](https://github.com/quantumjot/cellx) and [`btrack`](https://github.com/quantumjot/BayesianTracker) libraries. Full requirements can be found in the `requirements.txt` file.
 
+**Install Docker compose**
+
+Installing latest docker-compose
+
+```bash
+ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ sudo chmod +x /usr/local/bin/docker-compose
+```
+
 ### Running in a Docker container
 
-We recommend running this in a docker container.
 
-Build the image:
+We recommend running this in a docker container. 
+We will use docker-compose for this
 
-```sh
+```bash
 git clone https://github.com/lowe-lab-ucl/cellx-predict.git
 cd cellx-predict
-docker build . -t cellxpred/cellxpred:latest
+env UID=$(id -u) GID=$(id -g) docker-compose up --build
 ```
 
-You can use the included shell script to run the container and specify the jobs according to the descriptions below.
-
-```sh
-./run_docker.sh
-```
 
 ### Local installation
 
