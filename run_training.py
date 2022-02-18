@@ -33,13 +33,6 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--docs_dir",
-        type=Path,
-        default=DEFAULT_PATH / "docs",
-        help="path to the documentation output directory",
-    )
-
-    parser.add_argument(
         "--model_dir",
         type=Path,
         default=DEFAULT_PATH / "models",

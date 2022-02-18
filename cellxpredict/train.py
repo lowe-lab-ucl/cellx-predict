@@ -81,7 +81,7 @@ def train_projector(config: ConfigBase):
 
     # set up the model
     model = _build_encoder(config)
-    model.summary()
+    # print (model.summary())
 
     # set up the datasets and augmentation
     projection_dataset = encoder_validation_dataset(config, batch_size=512)
@@ -162,15 +162,10 @@ def train(config: ConfigBase):
 
 def write_config_dictionary(config: ConfigBase) -> None:
     """Record params of the training run."""
-    # extract the data:
+    # extract the params into dict:
     json_data = {prm : str(getattr(config, prm)) for prm in config.__dict__}
 
-    # write a param json file
-    config.docs_dir = Path(str(config.log_dir).replace("logs", "docs"))
-    config.docs_dir.mkdir(parents=True, exist_ok=True)
-
-    # record the config params
-    time_stamp = str(config.docs_dir).split("/")[-1]
-    file_name = f'{config.docs_dir}/{time_stamp}-Training-Session.json'
+    # write the data into json file:
+    file_name = os.path.join(config.model_dir, 'ConfigHyperParams.json')
     with open(file_name, 'w') as json_file:
         json.dump(json_data, json_file, indent=4)

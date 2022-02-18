@@ -17,7 +17,6 @@ class ConfigBase:
     model: str = ""
     src_dir: Optional[os.PathLike] = None
     log_dir: Optional[os.PathLike] = None
-    docs_dir: Optional[os.PathLike] = None
     model_dir: Optional[os.PathLike] = None
     latent_dims: int = 32
     intermediate_dims: int = 256
