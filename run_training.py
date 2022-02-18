@@ -75,10 +75,10 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--max_iterations",
-        type=int,
-        default=200,
-        help="maximum number of iterations",
+        "--max_iterations_fraction",
+        type=float,
+        default=0.9,
+        help="percentage of steps before capacity reaches max value",
     )
 
     parser.add_argument(

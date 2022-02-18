@@ -43,7 +43,9 @@ class EncoderConfig(ConfigBase):
     model: str = "encoder"
     epochs: int = 50
     batch_size: int = 256
-    max_iterations: int = 100
+    num_images: int = None
+    max_iterations: int = None
+    max_iterations_fraction: float = None
 
 
 @dataclass
