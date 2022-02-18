@@ -166,6 +166,5 @@ def write_config_dictionary(config: ConfigBase) -> None:
     json_data = {prm : str(getattr(config, prm)) for prm in config.__dict__}
 
     # write the data into json file:
-    file_name = os.path.join(config.model_dir, 'ConfigHyperParams.json')
-    with open(file_name, 'w') as json_file:
+    with open(config.model_dir / 'ConfigHyperParams.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
