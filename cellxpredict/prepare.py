@@ -89,9 +89,12 @@ def prepare_temporal(config: ConfigBase):
             cutoff = data["cutoff"]
 
             for rotation in rotations:
-
                 # rotate k times in the xy plane
                 img = np.rot90(img, k=rotation, axes=(1, 2))
+
+                # get the last frame of the sequence
+                last_frame = img[-1, ...]
+                assert last_frame.shape == config.output_shape
 
                 z_mean, z_log_var, _ = model.predict(img)
                 z = np.stack([z_mean, z_log_var], axis=-1)
@@ -103,6 +106,7 @@ def prepare_temporal(config: ConfigBase):
                     "encoding": z,
                     "cutoff": cutoff,
                     "rotation": rotation,
+                    "last_frame": last_frame,
                 }
 
                 # now save out the encoding
