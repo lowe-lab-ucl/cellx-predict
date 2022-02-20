@@ -15,6 +15,7 @@ from tqdm.auto import tqdm
 
 from .config import ConfigBase
 from .models import _build_autoencoder, _build_encoder, _build_temporal
+from .session import write_config_json_file
 
 # TODO(arl): remove these hard-coded values for release
 MONTAGE_SAMPLES = 32
@@ -29,8 +30,8 @@ def train_encoder(config: ConfigBase):
     config.num_images = count_images_in_dataset(config.src_dir)
 
     # assign the max_iterations for capacity scaling
-    steps_per_epoch = config.num_images // config.batch_size
-    iter_ramp_up = config.epochs * steps_per_epoch
+    config.steps_per_epoch = config.num_images // config.batch_size
+    iter_ramp_up = config.epochs * config.steps_per_epoch
     config.max_iterations = int(iter_ramp_up * config.max_iterations_fraction)
 
     # set up the model
@@ -59,7 +60,7 @@ def train_encoder(config: ConfigBase):
     model.fit(
         train_dataset,
         epochs=config.epochs,
-        steps_per_epoch=steps_per_epoch,
+        steps_per_epoch=config.steps_per_epoch,
         callbacks=[tensorboard_callback, montage_callback],
     )
 
@@ -165,14 +166,4 @@ def train(config: ConfigBase):
     # get the training function
     train_fn = getattr(sys.modules[__name__], f"train_{config.model.lower()}")
     train_fn(config)
-    write_config_dictionary(config)
-
-
-def write_config_dictionary(config: ConfigBase) -> None:
-    """Record params of the training run."""
-    # extract the params into dict:
-    json_data = {prm : str(getattr(config, prm)) for prm in config.__dict__}
-
-    # write the data into json file:
-    with open(config.model_dir / 'ConfigHyperParams.json', 'w') as json_file:
-        json.dump(json_data, json_file, indent=4)
+    write_config_json_file(config)

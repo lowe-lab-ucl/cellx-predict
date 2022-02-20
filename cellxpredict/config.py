@@ -36,6 +36,7 @@ class EncoderConfig(ConfigBase):
     epochs: int = 50
     batch_size: int = 256
     num_images: int = None
+    steps_per_epoch: int = None
     max_iterations: int = None
     max_iterations_fraction: float = 0.9
 
