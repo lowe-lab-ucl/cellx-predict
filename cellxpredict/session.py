@@ -30,7 +30,7 @@ def load_config_attributes(json_params_file: Union[str, Path]) -> ConfigBase:
         json_data_dict = json.load(json_data)
 
     # Change the attributes to the model's values:
-    default_config = EncoderConfig() # inherits from ConfigBase()
+    default_config = EncoderConfig()  # inherits from ConfigBase()
 
     for attr in default_config.__dict__:
 
