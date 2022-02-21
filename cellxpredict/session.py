@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from typing import Union
 
-from .config import ConfigBase, EncoderConfig
+from .config import ConfigBase
 
 
 def write_config_json_file(config: ConfigBase) -> None:
@@ -12,12 +12,34 @@ def write_config_json_file(config: ConfigBase) -> None:
     json_data = {prm : str(getattr(config, prm)) for prm in config.__dict__}
 
     # write the data into json file:
-    with open(config.model_dir / 'ConfigHyperParams.json', 'w') as json_file:
+    # model = str(config.model).capitalize()
+    # json_fn = config.model_dir / f'ConfigHyperParams-{model}.json'
+    json_fn = config.model_dir / f'ConfigHyperParams.json'
+    with open(json_fn, 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
 
-def load_config_attributes(json_params_file: Union[str, Path]) -> ConfigBase:
-    """Overwrite default config params from JSON file."""
+def load_config_attributes(
+    default_config: ConfigBase,
+    json_params_file: Union[str, Path]
+) -> ConfigBase:
+    """Overwrite default config params from JSON file.
+
+    Parameters
+    ----------
+    default_config : ConfigBase
+        The @dataclass EncoderConfig / TemporalConfig / FullConfig
+        inheriting from ConfigBase.
+
+    json_params_file : Union[str, Path]
+        The path to the JSON file storing the hyperparameters (attributes)
+        of how the model was trained.
+
+    Returns
+    -------
+    default_config : ConfigBase:
+        The respective @dataclass with updated attributes.
+    """
 
     # Check validity of the JSON params file:
     if isinstance(json_params_file, str):
@@ -30,7 +52,7 @@ def load_config_attributes(json_params_file: Union[str, Path]) -> ConfigBase:
         json_data_dict = json.load(json_data)
 
     # Change the attributes to the model's values:
-    default_config = EncoderConfig()  # inherits from ConfigBase()
+    # default_config = EncoderConfig()  # inherits from ConfigBase()
 
     for attr in default_config.__dict__:
 

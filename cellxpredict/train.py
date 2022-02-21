@@ -82,7 +82,7 @@ def train_projector(config: ConfigBase):
     # set up the model - train if weights don't exist
     try:
         model = _build_encoder(config)
-    except FileNotFoundError:
+    except (FileNotFoundError, OSError):
         # train the encoder / decoder from scratch
         config.model = 'encoder'
         train_encoder(config)
