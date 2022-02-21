@@ -14,7 +14,7 @@ def write_config_json_file(config: ConfigBase) -> None:
     # write the data into json file:
     # model = str(config.model).capitalize()
     # json_fn = config.model_dir / f'ConfigHyperParams-{model}.json'
-    json_fn = config.model_dir / f'ConfigHyperParams.json'
+    json_fn = config.model_dir / 'ConfigHyperParams.json'
     with open(json_fn, 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
