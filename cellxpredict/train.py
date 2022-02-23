@@ -79,17 +79,9 @@ def train_projector(config: ConfigBase):
 
     from .dataset import encoder_validation_dataset
 
-    # set up the model - train if weights don't exist
-    try:
-        model = _build_encoder(config)
-    except (FileNotFoundError, OSError):
-        # train the encoder / decoder from scratch
-        config.model = 'encoder'
-        train_encoder(config)
-        # now load the weights & create the projector
-        config.model = 'projector'
-        model = _build_encoder(config)
-    # print (model.summary())
+    # set up the model
+    model = _build_encoder(config)
+    print (model.summary())
 
     # set up the datasets and augmentation
     projection_dataset = encoder_validation_dataset(config, batch_size=512)
@@ -160,9 +152,11 @@ def train(config: ConfigBase):
 
     # set up a log directory
     config.log_dir = create_tensorboard_log_dir(config.log_dir)
-    config.model_dir = Path(str(config.log_dir).replace("logs", "models"))
+    if config.model == 'encoder':
+        config.model_dir = Path(str(config.log_dir).replace("logs", "models"))
 
     # get the training function
     train_fn = getattr(sys.modules[__name__], f"train_{config.model.lower()}")
     train_fn(config)
-    write_config_json_file(config)
+    if config.model == 'encoder':
+        write_config_json_file(config)
