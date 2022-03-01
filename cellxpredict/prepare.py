@@ -94,7 +94,7 @@ def prepare_temporal(config: ConfigBase):
 
                 # get the last frame of the sequence
                 last_frame = img[-1, ...]
-                assert last_frame.shape == config.output_shape
+                assert last_frame.shape == config.input_shape
 
                 z_mean, z_log_var, _ = model.predict(img)
                 z = np.stack([z_mean, z_log_var], axis=-1)
