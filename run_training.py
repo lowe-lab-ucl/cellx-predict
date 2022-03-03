@@ -61,6 +61,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--latent_dims",
+        type=int,
+        default=32,
+        help="number of dimensions in latent space embedding",
+    )
+
+    parser.add_argument(
         "--batch_size",
         type=int,
         default=256,
