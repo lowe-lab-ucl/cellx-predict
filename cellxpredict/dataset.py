@@ -41,7 +41,11 @@ class OutputType(CallableEnum):
 
 def encoder_training_dataset(config: ConfigBase):
     """Encoder training dataset."""
-    dataset = build_dataset(config.src_dir, output_shape=config.input_shape)
+    dataset = build_dataset(
+        config.src_dir,
+        output_shape=config.input_shape,
+        output_dtype=config.input_dtype
+    )
     dataset = dataset.shuffle(
         buffer_size=config.batch_size * 1000, reshuffle_each_iteration=True
     )
@@ -61,7 +65,11 @@ def encoder_training_dataset(config: ConfigBase):
 
 def encoder_validation_dataset(config: ConfigBase, batch_size: int = 1):
     """Encoder validation dataset."""
-    dataset = build_dataset(config.src_dir, output_shape=config.input_shape)
+    dataset = build_dataset(
+        config.src_dir,
+        output_shape=config.input_shape,
+        output_dtype=config.input_dtype
+    )
     dataset = dataset.shuffle(
         buffer_size=config.batch_size * 1000, reshuffle_each_iteration=True
     )
