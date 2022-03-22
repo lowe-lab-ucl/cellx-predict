@@ -54,6 +54,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--input_dtype",
+        type=str,
+        default="uint8",
+        help="input dtype of the image data",
+    )
+
+    parser.add_argument(
         "--batch_size",
         type=int,
         default=256,

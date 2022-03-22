@@ -23,6 +23,7 @@ class ConfigBase:
     capacity: int = 50
     gamma: int = 1_000
     input_shape: Tuple[int, int, int] = (64, 64, 2)
+    input_dtype: str = "uint8"
     layers: List[int] = field(default_factory=lambda: [8, 16, 32, 64])
 
     def filename(self, component: str = "weights"):
