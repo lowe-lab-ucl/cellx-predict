@@ -16,8 +16,8 @@ class Models(enum.Enum):
 class ConfigBase:
     model: str = ""
     src_dir: Optional[os.PathLike] = None
-    model_dir: Optional[os.PathLike] = None
     log_dir: Optional[os.PathLike] = None
+    model_dir: Optional[os.PathLike] = None
     latent_dims: int = 32
     intermediate_dims: int = 256
     capacity: int = 50
@@ -28,10 +28,7 @@ class ConfigBase:
     output_type: str = "label"
 
     def filename(self, component: str = "weights"):
-        filename = (
-            f"{self.model}_{component}_capacity={self.capacity}_"
-            f"z={self.latent_dims}_gamma={self.gamma}"
-        )
+        filename = (f"{self.model}_{component}")
         return filename
 
 
@@ -40,7 +37,10 @@ class EncoderConfig(ConfigBase):
     model: str = "encoder"
     epochs: int = 50
     batch_size: int = 256
-    max_iterations: int = 200_000
+    num_images: int = None
+    steps_per_epoch: int = None
+    max_iterations: int = None
+    max_iterations_fraction: float = 0.9
 
 
 @dataclass

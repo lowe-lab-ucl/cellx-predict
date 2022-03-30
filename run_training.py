@@ -54,6 +54,19 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--layers",
+        type=ast.literal_eval,
+        default=[8, 16, 32, 64],
+        help="encoder layers list",
+    )
+
+    parser.add_argument(
+        "--latent_dims",
+        type=int,
+        default=32,
+        help="number of dimensions in latent space embedding",
+    )
+    parser.add_argument(
         "--input_dtype",
         type=str,
         default="uint8",
@@ -72,6 +85,13 @@ if __name__ == "__main__":
         type=int,
         default=50,
         help="training epochs",
+    )
+
+    parser.add_argument(
+        "--max_iterations_fraction",
+        type=float,
+        default=0.9,
+        help="percentage of steps before capacity reaches max value",
     )
 
     parser.add_argument(

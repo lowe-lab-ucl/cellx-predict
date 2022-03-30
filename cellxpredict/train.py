@@ -1,19 +1,22 @@
 import sys
+from pathlib import Path
 
 import numpy as np
+
 from cellx.callbacks import (
     tensorboard_confusion_matrix_callback,
     tensorboard_montage_callback,
 )
+from cellx.tools.dataset import count_images_in_dataset
 from cellx.train import create_tensorboard_log_dir
 from tensorflow import keras as K
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from .config import ConfigBase
 from .models import _build_autoencoder, _build_encoder, _build_temporal
+from .session import write_config_json_file
 
 # TODO(arl): remove these hard-coded values for release
-NUM_IMAGES = 1_030_766
 MONTAGE_SAMPLES = 32
 TEMPORAL_STEPS_PER_EPOCH = 100
 
@@ -21,6 +24,14 @@ TEMPORAL_STEPS_PER_EPOCH = 100
 def train_encoder(config: ConfigBase):
     """Train the encoder model."""
     from .dataset import encoder_training_dataset, encoder_validation_dataset
+
+    # soft-code variables for the model
+    config.num_images = count_images_in_dataset(config.src_dir)
+
+    # assign the max_iterations for capacity scaling
+    config.steps_per_epoch = config.num_images // config.batch_size
+    iter_ramp_up = config.epochs * config.steps_per_epoch
+    config.max_iterations = int(iter_ramp_up * config.max_iterations_fraction)
 
     # set up the model
     model = _build_autoencoder(config)
@@ -48,11 +59,12 @@ def train_encoder(config: ConfigBase):
     model.fit(
         train_dataset,
         epochs=config.epochs,
-        steps_per_epoch=NUM_IMAGES // config.batch_size,
+        steps_per_epoch=config.steps_per_epoch,
         callbacks=[tensorboard_callback, montage_callback],
     )
 
     # save the model weights
+    config.model_dir.mkdir(parents=True, exist_ok=True)
     model_filename = config.model_dir / config.filename("weights")
     model.encoder.save_weights(model_filename.with_suffix(".h5"))
 
@@ -69,7 +81,7 @@ def train_projector(config: ConfigBase):
 
     # set up the model
     model = _build_encoder(config)
-    model.summary()
+    # print (model.summary())
 
     # set up the datasets and augmentation
     projection_dataset = encoder_validation_dataset(config, batch_size=512)
@@ -140,7 +152,11 @@ def train(config: ConfigBase):
 
     # set up a log directory
     config.log_dir = create_tensorboard_log_dir(config.log_dir)
+    if config.model == 'encoder':
+        config.model_dir = Path(str(config.log_dir).replace("logs", "models"))
 
     # get the training function
     train_fn = getattr(sys.modules[__name__], f"train_{config.model.lower()}")
     train_fn(config)
+    if config.model == 'encoder':
+        write_config_json_file(config)
