@@ -81,7 +81,7 @@ def train_projector(config: ConfigBase):
 
     # set up the model
     model = _build_encoder(config)
-    print (model.summary())
+    # print (model.summary())
 
     # set up the datasets and augmentation
     projection_dataset = encoder_validation_dataset(config, batch_size=512)
