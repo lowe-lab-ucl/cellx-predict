@@ -66,7 +66,6 @@ if __name__ == "__main__":
         default=32,
         help="number of dimensions in latent space embedding",
     )
-    
     parser.add_argument(
         "--input_dtype",
         type=str,
