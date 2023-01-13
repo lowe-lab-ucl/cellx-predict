@@ -11,6 +11,9 @@ def write_config_json_file(config: ConfigBase) -> None:
     # extract the params into dict:
     json_data = {prm : str(getattr(config, prm)) for prm in config.__dict__}
 
+    src_files = list(Path(config.src_dir).glob("*.tfrecord"))
+    json_data.update({"src_files": src_files})
+
     # write the data into json file:
     # model = str(config.model).capitalize()
     # json_fn = config.model_dir / f'ConfigHyperParams-{model}.json'
