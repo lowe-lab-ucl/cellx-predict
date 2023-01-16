@@ -77,7 +77,7 @@ def train_encoder(config: ConfigBase):
 
     decoder_weights_filename = config.filename("weights").replace("encoder", "decoder")
     model_weights_filename = config.model_dir / decoder_weights_filename
-    model.decoder.save_weights(model_filename.with_suffix(".h5"))
+    model.decoder.save_weights(model_weights_filename.with_suffix(".h5"))
 
 
 
