@@ -80,7 +80,6 @@ def train_encoder(config: ConfigBase):
     model.decoder.save_weights(model_weights_filename.with_suffix(".h5"))
 
 
-
 def train_projector(config: ConfigBase):
     """Train the projector model."""
     from sklearn.decomposition import PCA
