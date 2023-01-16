@@ -63,14 +63,22 @@ def train_encoder(config: ConfigBase):
         callbacks=[tensorboard_callback, montage_callback],
     )
 
-    # save the model weights
+    # save the model and model weights
     config.model_dir.mkdir(parents=True, exist_ok=True)
-    model_filename = config.model_dir / config.filename("weights")
-    model.encoder.save_weights(model_filename.with_suffix(".h5"))
+    model_filename = config.model_dir / config.model
+    model.encoder.save(model_filename)
 
-    decoder_filename = config.filename("weights").replace("encoder", "decoder")
+    model_weights_filename = config.model_dir / config.filename("weights")
+    model.encoder.save_weights(model_weights_filename.with_suffix(".h5"))
+
+    decoder_filename = config.model.replace("encoder", "decoder")
     model_filename = config.model_dir / decoder_filename
+    model.decoder.save(model_filename)
+
+    decoder_weights_filename = config.filename("weights").replace("encoder", "decoder")
+    model_weights_filename = config.model_dir / decoder_weights_filename
     model.decoder.save_weights(model_filename.with_suffix(".h5"))
+
 
 
 def train_projector(config: ConfigBase):
