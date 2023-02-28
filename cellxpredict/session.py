@@ -11,7 +11,8 @@ def write_config_json_file(config: ConfigBase) -> None:
     # extract the params into dict:
     json_data = {prm : str(getattr(config, prm)) for prm in config.__dict__}
     src_files = list(sorted(Path(config.src_dir).glob("*.tfrecord")))
-    json_data.update({"src_files": src_files})
+    src_files_str = [str(f) for f in src_files]
+    json_data.update({"src_files": src_files_str})
 
     # write the data into json file:
     # model = str(config.model).capitalize()
