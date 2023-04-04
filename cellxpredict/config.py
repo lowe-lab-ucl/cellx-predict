@@ -28,7 +28,7 @@ class ConfigBase:
     output_type: str = "label"
 
     def filename(self, component: str = "weights"):
-        filename = (f"{self.model}_{component}")
+        filename = f"{self.model}_{component}"
         return filename
 
 
@@ -41,6 +41,9 @@ class EncoderConfig(ConfigBase):
     steps_per_epoch: int = None
     max_iterations: int = None
     max_iterations_fraction: float = 0.9
+    augment_flips: bool = True
+    augment_normalization: bool = True
+    augment_boundary: bool = False
 
 
 @dataclass
