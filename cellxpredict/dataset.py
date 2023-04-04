@@ -42,21 +42,26 @@ class OutputType(CallableEnum):
 def encoder_training_dataset(config: ConfigBase):
     """Encoder training dataset."""
     dataset = build_dataset(
-        config.src_dir,
-        output_shape=config.input_shape,
-        output_dtype=config.input_dtype
+        config.src_dir, output_shape=config.input_shape, output_dtype=config.input_dtype
     )
     dataset = dataset.shuffle(
         buffer_size=config.batch_size * 1000, reshuffle_each_iteration=True
     )
-    dataset = append_conditional_augmentation(
-        dataset,
-        [augment_random_boundary],
-        accept_probability=0.1,
-    )
-    dataset = dataset.map(augment_random_flip, num_parallel_calls=4)
-    dataset = dataset.map(augment_random_rot90, num_parallel_calls=4)
-    dataset = dataset.map(per_channel_normalize, num_parallel_calls=4)
+
+    if config.augment_boundary:
+        dataset = append_conditional_augmentation(
+            dataset,
+            [augment_random_boundary],
+            accept_probability=0.1,
+        )
+
+    if config.augment_flip:
+        dataset = dataset.map(augment_random_flip, num_parallel_calls=4)
+        dataset = dataset.map(augment_random_rot90, num_parallel_calls=4)
+
+    if config.augment_normalize:
+        dataset = dataset.map(per_channel_normalize, num_parallel_calls=4)
+
     dataset = dataset.batch(config.batch_size)
     dataset = dataset.prefetch(1)
     dataset = dataset.repeat()
@@ -66,9 +71,7 @@ def encoder_training_dataset(config: ConfigBase):
 def encoder_validation_dataset(config: ConfigBase, batch_size: int = 1):
     """Encoder validation dataset."""
     dataset = build_dataset(
-        config.src_dir,
-        output_shape=config.input_shape,
-        output_dtype=config.input_dtype
+        config.src_dir, output_shape=config.input_shape, output_dtype=config.input_dtype
     )
     dataset = dataset.shuffle(
         buffer_size=config.batch_size * 1000, reshuffle_each_iteration=True
@@ -320,7 +323,6 @@ class TauVAEDataset:
 
         for label in self.labels:
             for idx in range(self._n_validate):
-
                 data = self._validation[label][idx]
                 encoding = trim_encoding(
                     data.encoding, self._config.max_len, data.cutoff
